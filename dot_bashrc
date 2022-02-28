@@ -133,7 +133,10 @@ fi
 
 # Path to go libs
 export GOPATH="$HOME/go:$HOME/Learning/go:$HOME/exercism/go"
+export PATH="$PATH:$GOPATH:$HOME/go/bin"
 
 . "$HOME/.cargo/env"
 
+alias ls="ls --color=tty"
 alias ll="ls -la"
+source /usr/share/nvm/init-nvm.sh
