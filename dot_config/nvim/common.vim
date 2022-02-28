@@ -10,7 +10,7 @@ set laststatus=2
 set tabstop=4 shiftwidth=4 smarttab expandtab " Tab width for tab and space
 set showmatch
 set relativenumber
-set colorcolumn=80
+set guicursor=
 
 " coc related
 " TextEdit might fail if hidden is not set.

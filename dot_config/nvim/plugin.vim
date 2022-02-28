@@ -1,49 +1,41 @@
 call plug#begin('~/.vim/plugged')
 
 " To work better with tmux, but i don't remember why
-Plug 'https://github.com/wincent/terminus'
+" Plug 'https://github.com/wincent/terminus'
 
 " IDEditor like features
 Plug 'neovim/nvim-lspconfig'
-Plug 'preservim/nerdtree' " Filesystem tree
 Plug 'junegunn/fzf' " Fuzzy file finder like <C-p> in VsCode
 Plug 'lervag/vimtex' " Tex code completer, probably want to switch to coc-vimtex
-Plug 'preservim/nerdcommenter' " Toggle comment
-Plug 'cespare/vim-toml'
+Plug 'numToStr/Comment.nvim' " Toggle comment
 Plug 'udalov/kotlin-vim' " to help nvim-lsp with kotlin
-Plug 'folke/lsp-colors.nvim', {'branch': 'main'}
-
 Plug 'mhartington/formatter.nvim'
+
 " Auto completion plugin
 Plug 'hrsh7th/cmp-nvim-lsp', {'branch': 'main'}
 Plug 'hrsh7th/cmp-buffer', {'branch': 'main'}
 Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
+Plug 'hrsh7th/cmp-nvim-lua', {'branch': 'main'}
+Plug 'hrsh7th/cmp-path', {'branch': 'main'}
 Plug 'onsails/lspkind-nvim'
+Plug 'folke/lsp-colors.nvim', {'branch': 'main'}
 
 " Vsnip and cmp integration
 Plug 'hrsh7th/cmp-vsnip', {'branch': 'main'}
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets', {'branch': 'main'}
+Plug 'mattn/emmet-vim'
 
 " Better code highlighter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Themes and style
 Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'juanedi/predawn.vim'
-Plug 'mhartington/oceanic-next'
-Plug 'arcticicestudio/nord-vim'
-Plug 'rakr/vim-one'
-Plug 'crusoexia/vim-monokai'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'sainnhe/sonokai'
-Plug 'tomasiser/vim-code-dark'
-" Darcula :'(
-"Plug 'blueshirts/darcula'
-Plug 'doums/darcula'
 Plug 'ryanoasis/vim-devicons'
-
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Status line
@@ -59,34 +51,13 @@ Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlight
 Plug 'evanleck/vim-svelte', {'branch': 'main'} " Svelte syntax highlight
 Plug 'tikhomirov/vim-glsl'
 
-" Markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 call plug#end()
 
 " Terminus setup -- Better terminal support
 set runtimepath+=~/.vim/bundle/terminus/plugin/terminus.vim
-
-" NERDCommenter vue fix
-let g:ft = ''
-function! NERDCommenter_before()
-  if &ft == 'vue'
-    let g:ft = 'vue'
-    let stack = synstack(line('.'), col('.'))
-    if len(stack) > 0
-      let syn = synIDattr((stack)[0], 'name')
-      if len(syn) > 0
-        exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
-      endif
-    endif
-  endif
-endfunction
-function! NERDCommenter_after()
-  if g:ft == 'vue'
-    setf vue
-    let g:ft = ''
-  endif
-endfunction
 
 " Setting up vimtex
 let g:tex_flavor='latex'
