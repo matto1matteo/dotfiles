@@ -204,7 +204,7 @@ exec_always --no-startup-id pamac-tray
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # Set bg image
-exec_always --no-startup-id feh --bg-scale $HOME/.themes/Wallpapers/low-poly-forest.jpg
+exec_always --no-startup-id feh --bg-scale $HOME/.themes/Wallpapers/tree_light_dark_1920x1080.jpg
 
 # Set border
 default_border pixel 5
