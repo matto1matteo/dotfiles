@@ -1,0 +1,41 @@
+window:
+  padding:
+    x: 2
+    y: 2
+  decorations: full
+  startup_mode: Maximized
+font:
+  size: 13
+  normal:
+    family: FuraCode Nerd Font
+  bold:
+    family: FuraCode Nerd Font
+    style: Bold
+  italic:
+    family: FuraCode Nerd Font
+    style: Italic
+  bold_italic:
+    family: FuraCode Nerd Font
+    style: Bold Italic
+colors:
+  primary:
+    background: "#282c34"
+    foreground: "#abb2bf"
+  normal:
+    black: "#282c34"
+    red: "#e06c75"
+    green: "#98c379"
+    yellow: "#d19a66"
+    blue: "#61afef"
+    magenta: "#c678dd"
+    cyan: "#56b6c2"
+    white: "#abb2bf"
+  bright:
+    black: "#5c6370"
+    red: "#e06c75"
+    green: "#98c379"
+    yellow: "#d19a66"
+    blue: "#61afef"
+    magenta: "#c678dd"
+    cyan: "#56b6c2"
+    white: "#ffffff"
