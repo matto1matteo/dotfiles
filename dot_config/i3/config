@@ -211,4 +211,4 @@ default_border pixel 5
 hide_edge_borders both
 
 # screengrab shortcut
-bindsym $mod+Shift+s screngrab
+bindsym --release Print exec screengrab -f
