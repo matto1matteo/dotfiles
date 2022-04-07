@@ -2,10 +2,14 @@ call plug#begin('~/.vim/plugged')
 
 " To work better with tmux, but i don't remember why
 " Plug 'https://github.com/wincent/terminus'
+Plug 'tmux-plugins/vim-tmux'
+
+" Fuzzy finders
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " IDEditor like features
 Plug 'neovim/nvim-lspconfig'
-Plug 'junegunn/fzf' " Fuzzy file finder like <C-p> in VsCode
 Plug 'lervag/vimtex' " Tex code completer, probably want to switch to coc-vimtex
 Plug 'numToStr/Comment.nvim' " Toggle comment
 Plug 'udalov/kotlin-vim' " to help nvim-lsp with kotlin
