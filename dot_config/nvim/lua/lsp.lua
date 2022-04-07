@@ -87,7 +87,8 @@ local servers = {
     "texlab",
     "kotlin_language_server",
     "vuels",
-    "cssls"
+    "cssls",
+    "metals",
 }
 
 local util = require("lspconfig/util")
