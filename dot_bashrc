@@ -140,3 +140,5 @@ export PATH="$PATH:$GOPATH:$HOME/go/bin"
 alias ls="ls --color=tty"
 alias ll="ls -la"
 source /usr/share/nvm/init-nvm.sh
+
+export EDITOR=nvim
