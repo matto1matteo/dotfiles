@@ -1,5 +1,5 @@
 -- function that use the signature mode, lhs, rhs, options
-local map = require("keybindings").map
+local map = require("mattomatteo.keybindings").map
 -- Disable higlith after search by clicking <enter>
 -- Had to remap couse <CR> was already mapped to next line
 -- nnoremap <CR> :noh<CR>
