@@ -203,6 +203,9 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id pamac-tray
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
+# it keymap
+exec_always --no-startup-id setxkbmap it
+
 # Set bg image
 exec_always --no-startup-id feh --bg-scale $HOME/.themes/Wallpapers/tree_light_dark_1920x1080.jpg
 
