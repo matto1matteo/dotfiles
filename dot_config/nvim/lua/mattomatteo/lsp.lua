@@ -4,8 +4,10 @@ vim.g["completion_matching_strategy_list"] = {"exact", "substring", "fuzzy"}
 -- Setup nvim-cmp
 local lspkind = require("lspkind")
 
-
 local cmp = require("cmp")
+if cmp == nil then
+    error("Something went wrong initializing cmp")
+end
 cmp.setup(
     {
         snippet = {
@@ -13,13 +15,13 @@ cmp.setup(
                 vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
             end
         },
-        mapping = {
+        mapping = cmp.mapping.preset.insert({
             ["<C-d>"] = cmp.mapping.scroll_docs(-4),
             ["<C-f>"] = cmp.mapping.scroll_docs(4),
             ["<C-a>"] = cmp.mapping.complete(),
             ["<C-e>"] = cmp.mapping.close(),
             ["<CR>"] = cmp.mapping.confirm()
-        },
+        }),
         formatting = {
             format = lspkind.cmp_format(
                 {
@@ -28,13 +30,14 @@ cmp.setup(
                 }
             )
         },
-        sources = {
+        sources = cmp.config.sources({
             {name = "nvim_lua"},
             {name = "nvim_lsp"},
             {name = "vsnip"},
             {name = "path"},
+        }, {
             {name = "buffer"}
-        }
+        })
     }
 )
 
@@ -88,7 +91,7 @@ local servers = {
     "kotlin_language_server",
     "vuels",
     "cssls",
-    "metals",
+    "metals"
 }
 
 local util = require("lspconfig/util")
@@ -103,7 +106,6 @@ local function find_python_path(_, config)
     end
     config.settings.python.pythonPath = p
 end
-
 
 for _, server_name in ipairs(servers) do
     if server_name == "pylsp" then
