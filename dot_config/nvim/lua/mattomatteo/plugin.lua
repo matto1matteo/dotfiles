@@ -1,82 +1,93 @@
-vim.cmd([[
-call plug#begin('~/.vim/plugged')
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
-"  Support for tmux config highlits
-Plug 'tmux-plugins/vim-tmux'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    PackerBoot =
+        vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
+    vim.cmd [[packadd packer.nvim]]
+end
 
-" Fuzzy finders
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+return require("packer").startup(
+    ---Function used to install plugins
+    ---@param use function
+    function(use)
+        -- Automatically set up your configuration after cloning packer.nvim
+        -- Put this at the end after all plugins
+        use("tmux-plugins/vim-tmux")
 
-" IDEditor like features
-Plug 'neovim/nvim-lspconfig'
-Plug 'lervag/vimtex' " Tex code completer, probably want to switch to coc-vimtex
-Plug 'numToStr/Comment.nvim' " Toggle comment
-Plug 'udalov/kotlin-vim' " to help nvim-lsp with kotlin
-Plug 'mhartington/formatter.nvim'
+        -- Fuzzy finders
+        use("nvim-lua/plenary.nvim")
+        use("nvim-telescope/telescope.nvim")
 
-" Auto completion plugin
-Plug 'hrsh7th/cmp-nvim-lsp', {'branch': 'main'}
-Plug 'hrsh7th/cmp-buffer', {'branch': 'main'}
-Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
-Plug 'hrsh7th/cmp-nvim-lua', {'branch': 'main'}
-Plug 'hrsh7th/cmp-path', {'branch': 'main'}
-Plug 'onsails/lspkind-nvim'
-Plug 'folke/lsp-colors.nvim', {'branch': 'main'}
+        -- IDEditor like features)
+        use("neovim/nvim-lspconfig")
+        -- Tex code completer, probably want to switch to coc-vimtex
+        use(
+            {
+                "lervag/vimtex",
+                ft = {"tex", "bib"},
+                config = function()
+                    require("mattomatteo.vimtex")
+                end
+            }
+        )
+        -- Toggle comment
+        use("numToStr/Comment.nvim")
+        -- to help nvim-lsp with kotlin
+        use("udalov/kotlin-vim")
+        use("mhartington/formatter.nvim")
 
-" Vsnip and cmp integration
-Plug 'hrsh7th/cmp-vsnip', {'branch': 'main'}
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'rafamadriz/friendly-snippets', {'branch': 'main'}
-Plug 'mattn/emmet-vim'
+        -- Auto completion plugin
+        use({"hrsh7th/cmp-nvim-lsp", branch = "main"})
+        use({"hrsh7th/cmp-buffer", branch = "main"})
+        use({"hrsh7th/nvim-cmp", branch = "main"})
+        use({"hrsh7th/cmp-nvim-lua", branch = "main"})
+        use({"hrsh7th/cmp-path", branch = "main"})
+        use("onsails/lspkind-nvim")
+        use({"folke/lsp-colors.nvim", branch = "main"})
 
-" Better code highlighter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        -- Vsnip and cmp integration
+        use({"hrsh7th/cmp-vsnip", branch = "main"})
+        use("hrsh7th/vim-vsnip")
+        use("hrsh7th/vim-vsnip-integ")
+        use({"rafamadriz/friendly-snippets", branch = "main"})
+        -- use("mattn/emmet-vim")
 
-" Themes and style
-Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'ryanoasis/vim-devicons'
-Plug 'lukas-reineke/indent-blankline.nvim'
+        -- Better code highlighter
+        -- use({"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"})
 
-" Status line
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
+        -- Themes and style
+        use("morhetz/gruvbox")
+        use("joshdick/onedark.vim")
+        use("ayu-theme/ayu-vim")
+        use({"kaicataldo/material.vim", branch = "main"})
+        use("ryanoasis/vim-devicons")
+        use("lukas-reineke/indent-blankline.nvim")
 
-" Git integration
-Plug 'tpope/vim-fugitive'
+        -- Status line
+        use("nvim-lualine/lualine.nvim")
+        use("kyazdani42/nvim-web-devicons")
 
-" Syntax highlighter
-Plug 'posva/vim-vue' " Vue syntax integration
-Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlight
-Plug 'evanleck/vim-svelte', {'branch': 'main'} " Svelte syntax highlight
-Plug 'tikhomirov/vim-glsl'
+        -- Git integration
+        use("tpope/vim-fugitive")
 
-" Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+        -- Syntax highlighter
+        use("posva/vim-vue") -- Vue syntax integration
+        use("HerringtonDarkholme/yats.vim") -- TS syntax highlight
+        use(
+            {
+                "evanleck/vim-svelte",
+                branch = "main",
+                config = require("mattomatteo.svelte"),
+                ft = {"svelte"}
+            }
+        ) -- Svelte syntax highlight
+        use("tikhomirov/vim-glsl")
 
-call plug#end()
-]])
+        -- Markdown
+        use({"iamcco/markdown-preview.nvim", run = "cd app && yarn install"})
 
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_compiler_latexmk = {
-    build_dir = "",
-    callback = 1,
-    continuous = 1,
-    executable = "latexmk",
-    hooks = {},
-    options = {
-        "-shell-escape",
-        "-verbose",
-        "-file-line-error",
-        "-synctex=1",
-        "-interaction=nonstopmode"
-    }
-}
-vim.g.svelte_preprocessor_tags = {
-    {name = "ts", tag = "script", as = "typescript"}
-}
-vim.g.svelte_preprocessors = {"typescript", "ts"}
+        if PackerBoot then
+            require("packer").sync()
+        end
+    end
+)

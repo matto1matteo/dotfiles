@@ -15,13 +15,23 @@ cmp.setup(
                 vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
             end
         },
-        mapping = cmp.mapping.preset.insert({
-            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-a>"] = cmp.mapping.complete(),
-            ["<C-e>"] = cmp.mapping.close(),
-            ["<CR>"] = cmp.mapping.confirm()
-        }),
+        mapping = cmp.mapping.preset.insert(
+            {
+                ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-a>"] = cmp.mapping.complete(
+                    {
+                        config = {
+                            sources = {
+                                {name = "vsnip"}
+                            }
+                        }
+                    }
+                ),
+                ["<C-e>"] = cmp.mapping.close(),
+                ["<CR>"] = cmp.mapping.confirm()
+            }
+        ),
         formatting = {
             format = lspkind.cmp_format(
                 {
@@ -30,14 +40,17 @@ cmp.setup(
                 }
             )
         },
-        sources = cmp.config.sources({
-            {name = "nvim_lua"},
-            {name = "nvim_lsp"},
-            {name = "vsnip"},
-            {name = "path"},
-        }, {
-            {name = "buffer"}
-        })
+        sources = cmp.config.sources(
+            {
+                {name = "nvim_lua"},
+                {name = "nvim_lsp"},
+                {name = "vsnip"},
+                {name = "path"}
+            },
+            {
+                {name = "buffer"}
+            }
+        )
     }
 )
 
@@ -91,7 +104,10 @@ local servers = {
     "kotlin_language_server",
     "vuels",
     "cssls",
-    "metals"
+    "metals",
+    "svelte",
+    "html",
+    "emmet_ls"
 }
 
 local util = require("lspconfig/util")
@@ -112,15 +128,24 @@ for _, server_name in ipairs(servers) do
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
                 before_init = find_python_path
+            }
+        )
+    elseif server_name == "emmet_ls" or server_name == "html" then
+        lspconfig[server_name].setup(
+            {
+                on_attach = on_attach,
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                before_init = find_python_path,
+                filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
             }
         )
     else
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
             }
         )
     end
@@ -137,7 +162,7 @@ table.insert(runtime_path, "lua/?/init.lua")
 lspconfig.sumneko_lua.setup {
     on_attach = on_attach,
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
-    capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     settings = {
         Lua = {
             runtime = {
