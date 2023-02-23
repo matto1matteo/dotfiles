@@ -53,7 +53,7 @@ return require("packer").startup(
         -- use("mattn/emmet-vim")
 
         -- Better code highlighter
-        -- use({"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"})
+        use({"nvim-treesitter/nvim-treesitter", run = "<cmd>TSUpdate"})
 
         -- Themes and style
         use("morhetz/gruvbox")
@@ -82,6 +82,10 @@ return require("packer").startup(
             }
         ) -- Svelte syntax highlight
         use("tikhomirov/vim-glsl")
+        -- Koltin filetype
+        use("udalov/kotlin-vim")
+        -- Kitty config file
+        use("fladson/vim-kitty")
 
         -- Markdown
         use({"iamcco/markdown-preview.nvim", run = "cd app && yarn install"})

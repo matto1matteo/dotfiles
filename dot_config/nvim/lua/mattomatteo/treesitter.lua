@@ -1,4 +1,4 @@
-require "nvim-treesitter.configs".setup {
+require("nvim-treesitter.configs").setup {
     -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ensure_installed = {
         "go",
@@ -11,7 +11,6 @@ require "nvim-treesitter.configs".setup {
         "python",
         "scss",
         "css",
-        "vue",
         "svelte",
         "typescript",
         "javascript",

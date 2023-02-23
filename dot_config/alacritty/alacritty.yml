@@ -2,19 +2,19 @@ window:
   decorations: full
   startup_mode: Maximized
 font:
-  size: 13
+  size: 12
   offset:
     y: -4
   normal:
-    family: JetBrainsMono
+    family: JetBrainsMono NL
   bold:
-    family: JetBrainsMono
+    family: JetBrainsMono NL
     style: Bold
   italic:
-    family: JetBrainsMono
+    family: JetBrainsMono NL
     style: Italic
   bold_italic:
-    family: JetBrainsMono
+    family: JetBrainsMono NL
     style: Bold Italic
 colors:
   primary:

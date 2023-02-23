@@ -82,7 +82,7 @@ local on_attach = function()
     bufmap("n", "<leader>ao", "<cmd>lua vim.lsp.buf.outgoing_calls()<CR>")
 
     -- Diagnostic
-    bufmap("n", "<leader>sd", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
+    bufmap("n", "<leader>sd", "<cmd>lua vim.diagnostic.setloclist()<CR>")
     bufmap("n", "<leader>nd", "<cmd>lua vim.diagnostic.goto_next()<CR>")
     bufmap("n", "<leader>pd", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 end
@@ -100,14 +100,12 @@ local servers = {
     "rls",
     "clangd",
     "cmake",
-    "texlab",
-    "kotlin_language_server",
-    "vuels",
     "cssls",
-    "metals",
     "svelte",
     "html",
-    "emmet_ls"
+    "emmet_ls",
+    "dockerls",
+    "zls"
 }
 
 local util = require("lspconfig/util")
@@ -137,7 +135,6 @@ for _, server_name in ipairs(servers) do
             {
                 on_attach = on_attach,
                 capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-                before_init = find_python_path,
                 filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
             }
         )
