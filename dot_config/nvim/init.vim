@@ -13,6 +13,7 @@ lua require('mattomatteo.lualine_config')
 lua require('mattomatteo.commenter_config')
 lua require('mattomatteo.keybindings.keybindings')
 lua require('mattomatteo.telescope')
+lua require('mattomatteo.vimtex')
 
 
 let g:go_fmt_command = "goimports"
