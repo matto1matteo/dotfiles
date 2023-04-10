@@ -38,3 +38,11 @@ for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
+local globals = {
+    netrw_keepdir = 0,
+    netrw_localcopydircmd = "cp -r"
+}
+
+for k, v in pairs(globals) do
+    vim.g[k] = v
+end

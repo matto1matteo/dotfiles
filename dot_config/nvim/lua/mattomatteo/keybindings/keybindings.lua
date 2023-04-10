@@ -10,6 +10,8 @@ vim.g.maplocalleader = "_"
 
 map("n", "<C-p>", "<cmd>Telescope find_files<CR>", {noremap = true})
 
+map("n", "<leader>ex", "<cmd>Explore<CR>")
+
 -- " Markdown remap
 map("n", "<leader>P", "<Plug>MarkdownPreview")
 map("n", "<leader>F", "<cmd>Format<CR>", {silent = true, noremap = true})
