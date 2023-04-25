@@ -39,7 +39,7 @@ for k, v in pairs(options) do
 end
 
 local globals = {
-    netrw_keepdir = 0,
+    -- netrw_keepdir = 0,
     netrw_localcopydircmd = "cp -r"
 }
 

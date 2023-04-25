@@ -98,7 +98,7 @@ local servers = {
     -- "jedi_language_server",
     "pylsp",
     "rls",
-    "clangd",
+    "ccls",
     "cmake",
     "cssls",
     "svelte",
@@ -128,6 +128,17 @@ for _, server_name in ipairs(servers) do
                 on_attach = on_attach,
                 capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
                 before_init = find_python_path
+            }
+        )
+    elseif server_name == "ccls" then
+        lspconfig[server_name].setup(
+            {
+                on_attach = on_attach,
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                before_init = find_python_path,
+                init_options = {
+                    compilationDatabaseDirectory = "build"
+                }
             }
         )
     elseif server_name == "emmet_ls" or server_name == "html" then
