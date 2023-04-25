@@ -2,6 +2,8 @@
 # ~/.bashrc
 #
 
+source $HOME/.config/bash/functions.sh
+
 export HISTTIMEFORMAT="%d/%m/%y %T "
 
 # If not running interactively, don't do anything
@@ -139,7 +141,13 @@ export PATH="$PATH:$GOPATH:$HOME/go/bin"
 alias ls="ls --color=tty"
 alias ll="ls -la"
 source /usr/share/nvm/init-nvm.sh
-source $HOME/.config/bash/functions.sh
-source $HOME/.config/bash/arduino_cli.sh
+# For arduino dev only
+# source $HOME/.config/bash/arduino_cli.sh
 
 export EDITOR=nvim
+. $HOME/.config/bash/_zig.bash
+
+export CMAKE_GENERATOR=Ninja
+
+# turn off bell sound
+bind "set bell-style none"
