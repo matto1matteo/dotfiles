@@ -1,14 +1,18 @@
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    PackerBoot =
-        vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
+local ensure_packer = function()
+  local fn = vim.fn
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
     vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
+local packer_bootstrap = ensure_packer()
+
 return require("packer").startup(
-    ---Function used to install plugins
-    ---@param use function
     function(use)
         -- Automatically set up your configuration after cloning packer.nvim
         -- Put this at the end after all plugins
@@ -45,12 +49,16 @@ return require("packer").startup(
         use("onsails/lspkind-nvim")
         use({"folke/lsp-colors.nvim", branch = "main"})
 
+        -- DAP a.k.a debug adapters
+        use('mfussenegger/nvim-dap')
+        use({ "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} })
+        use({"ldelossa/nvim-dap-projects", requires = {"mfussenegger/nvim-dap"} })
+
         -- Vsnip and cmp integration
         use({"hrsh7th/cmp-vsnip", branch = "main"})
         use("hrsh7th/vim-vsnip")
         use("hrsh7th/vim-vsnip-integ")
         use({"rafamadriz/friendly-snippets", branch = "main"})
-        -- use("mattn/emmet-vim")
 
         -- Better code highlighter
         use({"nvim-treesitter/nvim-treesitter", run = "<cmd>TSUpdate"})
@@ -60,7 +68,6 @@ return require("packer").startup(
         use("joshdick/onedark.vim")
         use("ayu-theme/ayu-vim")
         use({"kaicataldo/material.vim", branch = "main"})
-        use("ryanoasis/vim-devicons")
         use("lukas-reineke/indent-blankline.nvim")
 
         -- Status line
@@ -70,27 +77,13 @@ return require("packer").startup(
         -- Git integration
         use("tpope/vim-fugitive")
 
-        -- Syntax highlighter
-        use("posva/vim-vue") -- Vue syntax integration
-        use("HerringtonDarkholme/yats.vim") -- TS syntax highlight
-        use(
-            {
-                "evanleck/vim-svelte",
-                branch = "main",
-                config = require("mattomatteo.svelte"),
-                ft = {"svelte"}
-            }
-        ) -- Svelte syntax highlight
-        use("tikhomirov/vim-glsl")
-        -- Koltin filetype
-        use("udalov/kotlin-vim")
         -- Kitty config file
         use("fladson/vim-kitty")
 
         -- Markdown
         use({"iamcco/markdown-preview.nvim", run = "cd app && yarn install"})
 
-        if PackerBoot then
+        if packer_bootstrap then
             require("packer").sync()
         end
     end

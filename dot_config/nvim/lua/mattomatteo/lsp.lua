@@ -95,17 +95,14 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local servers = {
     "tsserver",
     "gopls",
-    -- "jedi_language_server",
     "pylsp",
-    "rls",
     "ccls",
     "cmake",
     "cssls",
     "svelte",
-    "html",
-    "emmet_ls",
     "dockerls",
-    "zls"
+    "zls",
+    "csharp_ls"
 }
 
 local util = require("lspconfig/util")
@@ -141,14 +138,6 @@ for _, server_name in ipairs(servers) do
                 }
             }
         )
-    elseif server_name == "emmet_ls" or server_name == "html" then
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-                filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
-            }
-        )
     else
         lspconfig[server_name].setup(
             {
@@ -182,23 +171,3 @@ lspconfig.lua_ls.setup {
     },
   },
 }
-
---[[ local configs = require("lspconfig/configs")
-local lsp_util = require("lspconfig/util")
-if not lspconfig.glslls then
-    configs.glslls = {
-        default_config = {
-            cmd = {"glslls", "--stdin"},
-            filetypes = {"glsl", "vert", "frag"},
-            root_dir = lsp_util.find_git_ancestor,
-            single_file_support = true
-        }
-    }
-end
-
-lspconfig.glslls.setup(
-    {
-        on_attach = on_attach,
-        capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-    }
-) ]]

@@ -145,7 +145,7 @@ source /usr/share/nvm/init-nvm.sh
 # source $HOME/.config/bash/arduino_cli.sh
 
 export EDITOR=nvim
-. $HOME/.config/bash/_zig.bash
+#. $HOME/.config/bash/_zig.bash
 
 export CMAKE_GENERATOR=Ninja
 
