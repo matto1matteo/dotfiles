@@ -6,15 +6,15 @@ font:
   offset:
     y: -4
   normal:
-    family: JetBrainsMono NL
+    family: JetBrainsMono
   bold:
-    family: JetBrainsMono NL
+    family: JetBrainsMono
     style: Bold
   italic:
-    family: JetBrainsMono NL
+    family: JetBrainsMono
     style: Italic
   bold_italic:
-    family: JetBrainsMono NL
+    family: JetBrainsMono
     style: Bold Italic
 colors:
   primary:
