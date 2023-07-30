@@ -96,7 +96,7 @@ local servers = {
     "tsserver",
     "gopls",
     "pylsp",
-    "ccls",
+    "clangd",
     "cmake",
     "cssls",
     "svelte",
@@ -118,6 +118,17 @@ local function find_python_path(_, config)
     config.settings.python.pythonPath = p
 end
 
+lspconfig.omnisharp.setup(
+    {
+        cmd = {"omnisharp"},
+        on_attach = on_attach,
+        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+        handlers = {
+            ["textDocument/definition"] = require("omnisharp_extended").handler
+        }
+    }
+)
+
 for _, server_name in ipairs(servers) do
     if server_name == "pylsp" then
         lspconfig[server_name].setup(
@@ -138,6 +149,14 @@ for _, server_name in ipairs(servers) do
                 }
             }
         )
+    elseif server_name == "emmet_ls" or server_name == "html" then
+        lspconfig[server_name].setup(
+            {
+                on_attach = on_attach,
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
+            }
+        )
     else
         lspconfig[server_name].setup(
             {
@@ -150,24 +169,26 @@ end
 
 -- Lua language server protocol
 lspconfig.lua_ls.setup {
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
+    on_attach = on_attach,
+    capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT"
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {"vim"}
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true)
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false
+            }
+        }
+    }
 }

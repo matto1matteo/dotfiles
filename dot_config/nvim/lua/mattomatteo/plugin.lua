@@ -68,6 +68,7 @@ return require("packer").startup(
         use("joshdick/onedark.vim")
         use("ayu-theme/ayu-vim")
         use({"kaicataldo/material.vim", branch = "main"})
+        use("ryanoasis/vim-devicons")
         use("lukas-reineke/indent-blankline.nvim")
 
         -- Status line
@@ -77,6 +78,20 @@ return require("packer").startup(
         -- Git integration
         use("tpope/vim-fugitive")
 
+        -- Syntax highlighter
+        use("posva/vim-vue") -- Vue syntax integration
+        use("HerringtonDarkholme/yats.vim") -- TS syntax highlight
+        use(
+            {
+                "evanleck/vim-svelte",
+                branch = "main",
+                config = require("mattomatteo.svelte"),
+                ft = {"svelte"}
+            }
+        ) -- Svelte syntax highlight
+        use("tikhomirov/vim-glsl")
+        -- Koltin filetype
+        use("udalov/kotlin-vim")
         -- Kitty config file
         use("fladson/vim-kitty")
 

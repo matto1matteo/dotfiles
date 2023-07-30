@@ -1,6 +1,19 @@
 require("formatter").setup(
     {
         filetype = {
+            cs = {
+                function()
+                    return {
+                        exe = "dotnet format",
+                        args = {
+                            "style",
+                            "--include",
+                            vim.api.nvim_buf_get_name(0)
+                        },
+                        stdin = false,
+                    }
+                end
+            },
             cpp = {
                 -- clang-format
                 function()
