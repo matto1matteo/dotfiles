@@ -1,0 +1,13 @@
+[user]
+	email = matteome.cialei@gmail.com
+	name = Matteo Maria Emanuele Cialei
+[init]
+	defaultBranch = master
+[core]
+	editor = nvim
+[protocol "file"]
+	allow = always
+[merge]
+	tool = nvim
+[mergetool "nvim"]
+	cmd = nvim -d -c \"wincmd l\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
