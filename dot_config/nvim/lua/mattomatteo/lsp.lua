@@ -95,14 +95,18 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local servers = {
     "tsserver",
     "gopls",
+    -- "jedi_language_server",
     "pylsp",
+    "rls",
     "clangd",
+    -- "ccls",
     "cmake",
     "cssls",
     "svelte",
+    "html",
+    "emmet_ls",
     "dockerls",
-    "zls",
-    "csharp_ls"
+    "zls"
 }
 
 local util = require("lspconfig/util")

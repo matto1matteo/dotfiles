@@ -40,7 +40,8 @@ end
 
 local globals = {
     -- netrw_keepdir = 0,
-    netrw_localcopydircmd = "cp -r"
+    netrw_localcopydircmd = "cp -r",
+    netrw_liststyle = 3
 }
 
 for k, v in pairs(globals) do

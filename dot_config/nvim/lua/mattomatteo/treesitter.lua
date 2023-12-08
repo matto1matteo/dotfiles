@@ -1,4 +1,6 @@
 require("nvim-treesitter.configs").setup {
+    modules = {},
+    auto_install = true,
     -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ensure_installed = {
         "go",
@@ -15,7 +17,8 @@ require("nvim-treesitter.configs").setup {
         "typescript",
         "javascript",
         "yaml",
-        "markdown"
+        "markdown",
+        "zig"
     },
     --ignore_install = { "javascript" }, -- List of parsers to ignore installing
     highlight = {
@@ -29,5 +32,7 @@ require("nvim-treesitter.configs").setup {
     },
     indent = {
         enable = true
-    }
+    },
+    ignore_install = {},
+    sync_install = false
 }

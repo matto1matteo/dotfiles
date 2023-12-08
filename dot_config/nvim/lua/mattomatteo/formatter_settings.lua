@@ -2,6 +2,7 @@ require("formatter").setup(
     {
         filetype = {
             cs = {
+                -- clang-format
                 function()
                     return {
                         exe = "dotnet format",
@@ -84,7 +85,7 @@ require("formatter").setup(
                         stdin = true
                     }
                 end
-            },
+            }
         }
     }
 )

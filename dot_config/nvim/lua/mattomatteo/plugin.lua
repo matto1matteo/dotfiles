@@ -1,19 +1,18 @@
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local plugin_install_dirr = vim.fn.stdpath("data") .. "/site/pack/packer/start"
+local packer_install_dir = plugin_install_dirr .. "/packer.nvim"
 
-local ensure_packer = function()
-  local fn = vim.fn
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+if vim.fn.empty(vim.fn.glob(packer_install_dir)) > 0 then
+    PackerBoot =
+        vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_install_dir})
     vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
 end
 
-local packer_bootstrap = ensure_packer()
-
 return require("packer").startup(
+    ---Function used to install plugins
+    ---@param use function
     function(use)
+        -- include packer for non bootstraping situation
+        use("wbthomason/packer.nvim")
         -- Automatically set up your configuration after cloning packer.nvim
         -- Put this at the end after all plugins
         use("tmux-plugins/vim-tmux")
@@ -36,8 +35,6 @@ return require("packer").startup(
         )
         -- Toggle comment
         use("numToStr/Comment.nvim")
-        -- to help nvim-lsp with kotlin
-        use("udalov/kotlin-vim")
         use("mhartington/formatter.nvim")
 
         -- Auto completion plugin
@@ -48,25 +45,25 @@ return require("packer").startup(
         use({"hrsh7th/cmp-path", branch = "main"})
         use("onsails/lspkind-nvim")
         use({"folke/lsp-colors.nvim", branch = "main"})
-
-        -- DAP a.k.a debug adapters
-        use('mfussenegger/nvim-dap')
-        use({ "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} })
-        use({"ldelossa/nvim-dap-projects", requires = {"mfussenegger/nvim-dap"} })
+        use({"Hoffs/omnisharp-extended-lsp.nvim"})
 
         -- Vsnip and cmp integration
         use({"hrsh7th/cmp-vsnip", branch = "main"})
         use("hrsh7th/vim-vsnip")
         use("hrsh7th/vim-vsnip-integ")
         use({"rafamadriz/friendly-snippets", branch = "main"})
+        -- use("mattn/emmet-vim")
 
         -- Better code highlighter
         use({"nvim-treesitter/nvim-treesitter", run = "<cmd>TSUpdate"})
 
         -- Themes and style
         use("morhetz/gruvbox")
-        use("joshdick/onedark.vim")
+        use("doums/darcula")
+        -- use("joshdick/onedark.vim")
         use("ayu-theme/ayu-vim")
+        use("rktjmp/lush.nvim")
+        use("metalelf0/jellybeans-nvim")
         use({"kaicataldo/material.vim", branch = "main"})
         use("ryanoasis/vim-devicons")
         use("lukas-reineke/indent-blankline.nvim")
@@ -90,15 +87,16 @@ return require("packer").startup(
             }
         ) -- Svelte syntax highlight
         use("tikhomirov/vim-glsl")
-        -- Koltin filetype
-        use("udalov/kotlin-vim")
         -- Kitty config file
         use("fladson/vim-kitty")
+
+        -- to help nvim-lsp with kotlin
+        use("udalov/kotlin-vim")
 
         -- Markdown
         use({"iamcco/markdown-preview.nvim", run = "cd app && yarn install"})
 
-        if packer_bootstrap then
+        if PackerBoot then
             require("packer").sync()
         end
     end
