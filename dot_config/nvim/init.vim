@@ -15,6 +15,8 @@ lua require('mattomatteo.keybindings.keybindings')
 lua require('mattomatteo.telescope')
 lua require('mattomatteo.vimtex')
 lua require('mattomatteo.indentbl')
+lua require('mattomatteo.autocommands')
+lua require('mattomatteo.tailwind')
 
 
 let g:go_fmt_command = "goimports"

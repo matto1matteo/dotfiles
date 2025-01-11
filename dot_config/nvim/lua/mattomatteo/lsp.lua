@@ -93,7 +93,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- lspconfig.<server_name>.setup{ options } to run a server
 -- Add server name to servers table
 local servers = {
-    "tsserver",
+    "ts_ls",
     "gopls",
     -- "jedi_language_server",
     "pylsp",
@@ -103,10 +103,12 @@ local servers = {
     "cmake",
     "cssls",
     "svelte",
-    "html",
-    "emmet_ls",
+    -- "html",
+    -- "emmet_ls",
     "dockerls",
-    "zls"
+    "zls",
+    "gradle_ls",
+    "kotlin_language_server",
 }
 
 local util = require("lspconfig/util")
@@ -161,6 +163,14 @@ for _, server_name in ipairs(servers) do
                 filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
             }
         )
+    elseif server_name == "gradle_ls" then
+        lspconfig[server_name].setup(
+            {
+                on_attach = on_attach,
+                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                root_dir = lspconfig.util.root_pattern("settings.gradle", "build.gradle", "settings.gradle.kts", "build.gradle.kts"),
+            }
+        )
     else
         lspconfig[server_name].setup(
             {
@@ -168,6 +178,10 @@ for _, server_name in ipairs(servers) do
                 capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
             }
         )
+    end
+
+    if server_name == "tsserver" then
+        lspconfig[server_name].filetypes = {"typescript", "typescriptreact", "typescript.tsx"}
     end
 end
 

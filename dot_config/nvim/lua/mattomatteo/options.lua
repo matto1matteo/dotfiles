@@ -39,9 +39,8 @@ for k, v in pairs(options) do
 end
 
 local globals = {
-    -- netrw_keepdir = 0,
-    netrw_localcopydircmd = "cp -r",
-    netrw_liststyle = 3
+    netrw_liststyle = 3,
+    netrw_localcopydircmd = 'cp -r'
 }
 
 for k, v in pairs(globals) do
