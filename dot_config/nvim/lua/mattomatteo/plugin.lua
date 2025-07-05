@@ -33,6 +33,7 @@ return require("packer").startup(
                 end
             }
         )
+        use({"ray-x/lsp_signature.nvim"})
         -- Toggle comment
         use("numToStr/Comment.nvim")
         use("mhartington/formatter.nvim")

@@ -62,7 +62,7 @@ local bufmap = function(type, key, value)
 end
 
 -- function to attach completion when setting up lsp
-local on_attach = function()
+local on_attach = function(_, bufnr)
     -- Goto
     bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
     bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
@@ -83,8 +83,18 @@ local on_attach = function()
 
     -- Diagnostic
     bufmap("n", "<leader>sd", "<cmd>lua vim.diagnostic.setloclist()<CR>")
-    bufmap("n", "<leader>nd", "<cmd>lua vim.diagnostic.goto_next()<CR>")
-    bufmap("n", "<leader>pd", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+    bufmap("n", "<leader>nd", "<cmd>lua vim.diagnostic.jump({count = 1})<CR>")
+    bufmap("n", "<leader>pd", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>")
+
+    require("lsp_signature").on_attach(
+        {
+            bind = true,
+            handler_opts = {
+                border = "rounded"
+            }
+        },
+        bufnr
+    )
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -108,25 +118,25 @@ local servers = {
     "dockerls",
     "zls",
     "gradle_ls",
-    "kotlin_language_server",
+    "kotlin_language_server"
 }
 
 local util = require("lspconfig/util")
 
-local path = util.path
 local function find_python_path(_, config)
     local p
     if vim.env.VIRTUAL_ENV then
-        p = path.join(vim.env.VIRTUAL_ENV, "bin", "python3")
+        p = table.concat({vim.env.VIRTUAL_ENV, "bin", "python3"})
     else
         p = util.find_cmd("python", "./venv/bin", config.root_dir)
     end
     config.settings.python.pythonPath = p
 end
 
+local pid = vim.fn.getpid()
 lspconfig.omnisharp.setup(
     {
-        cmd = {"omnisharp"},
+        cmd = {"omnisharp", "--languageserver", "--hostPID", tostring(pid)},
         on_attach = on_attach,
         capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
         handlers = {
@@ -135,12 +145,14 @@ lspconfig.omnisharp.setup(
     }
 )
 
+local default_capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 for _, server_name in ipairs(servers) do
     if server_name == "pylsp" then
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                capabilities = default_capabilities,
                 before_init = find_python_path
             }
         )
@@ -148,7 +160,7 @@ for _, server_name in ipairs(servers) do
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                capabilities = default_capabilities,
                 before_init = find_python_path,
                 init_options = {
                     compilationDatabaseDirectory = "build"
@@ -159,7 +171,7 @@ for _, server_name in ipairs(servers) do
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                capabilities = default_capabilities,
                 filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
             }
         )
@@ -167,15 +179,20 @@ for _, server_name in ipairs(servers) do
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-                root_dir = lspconfig.util.root_pattern("settings.gradle", "build.gradle", "settings.gradle.kts", "build.gradle.kts"),
+                capabilities = default_capabilities,
+                root_dir = lspconfig.util.root_pattern(
+                    "settings.gradle",
+                    "build.gradle",
+                    "settings.gradle.kts",
+                    "build.gradle.kts"
+                )
             }
         )
     else
         lspconfig[server_name].setup(
             {
                 on_attach = on_attach,
-                capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+                capabilities = default_capabilities
             }
         )
     end
@@ -188,7 +205,7 @@ end
 -- Lua language server protocol
 lspconfig.lua_ls.setup {
     on_attach = on_attach,
-    capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = default_capabilities,
     settings = {
         Lua = {
             runtime = {
