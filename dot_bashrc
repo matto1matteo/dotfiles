@@ -145,9 +145,21 @@ source /usr/share/nvm/init-nvm.sh
 # source $HOME/.config/bash/arduino_cli.sh
 
 export EDITOR=nvim
-#. $HOME/.config/bash/_zig.bash
+. $HOME/.config/bash/_zig.bash
 
 export CMAKE_GENERATOR=Ninja
 
 # turn off bell sound
 bind "set bell-style none"
+
+export PATH="$PATH:$HOME/.dotnet/tools"
+# ZVM
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+. "/home/mattomatteo/.sdkman/bin/sdkman-init.sh"
