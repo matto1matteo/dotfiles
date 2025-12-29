@@ -25,8 +25,6 @@ shopt -s histappend
 
 #PS1='[\u@\h \W]\$ '
 
-setxkbmap it
-
 
 # Colours
   reset="\[\e[0m\]"	# Reset Default Colour
@@ -71,18 +69,16 @@ getWorkdir() {
 	echo "$byellow\w$reset"
 }
 
-
-gitBranch() {
-    local error=$(git branch --show-current 2>&1 > /dev/null)
-    local value="($(git branch --show-current 2> /dev/null))"
-    if [[ ! -z "$error" ]]
+getBranch() {
+    if git branch --show-current &> /dev/null
     then
-        value=""
+        echo " ($(git branch --show-current)) "
+    else
+        echo ""
     fi
-    echo $value
 }
 
-PS1='$(gitBranch)'"\n$(getUser)@$(getHost):$(getWorkdir)""\n\\$ "
+PS1="\n$(getUser)@$(getHost):$(getWorkdir)"'$(getBranch)'"\n\\$ "
 
 case ${TERM} in
   xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
@@ -174,3 +170,4 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 . "/home/mattomatteo/.sdkman/bin/sdkman-init.sh"
+unset DRI_PRIME
