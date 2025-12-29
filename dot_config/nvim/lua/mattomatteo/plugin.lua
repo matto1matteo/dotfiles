@@ -33,7 +33,7 @@ return require("packer").startup(
                 end
             }
         )
-        use({"ray-x/lsp_signature.nvim"})
+        use({"ray-x/lsp_signature.nvim", branch = "master"})
         -- Toggle comment
         use("numToStr/Comment.nvim")
         use("mhartington/formatter.nvim")
@@ -47,16 +47,18 @@ return require("packer").startup(
         use("onsails/lspkind-nvim")
         use({"folke/lsp-colors.nvim", branch = "main"})
         use({"Hoffs/omnisharp-extended-lsp.nvim"})
-        use({
-            "luckasRanarison/tailwind-tools.nvim",
-            as = "tailwind-tools",
-            run = ":UpdateRemotePlugins",
-            dependencies = {
-                "nvim-treesitter/nvim-treesitter",
-                "nvim-telescope/telescope.nvim", -- optional
-                "neovim/nvim-lspconfig", -- optional
-            },
-        })
+        use(
+            {
+                "luckasRanarison/tailwind-tools.nvim",
+                as = "tailwind-tools",
+                run = ":UpdateRemotePlugins",
+                dependencies = {
+                    "nvim-treesitter/nvim-treesitter",
+                    "nvim-telescope/telescope.nvim", -- optional
+                    "neovim/nvim-lspconfig" -- optional
+                }
+            }
+        )
 
         -- Vsnip and cmp integration
         use({"hrsh7th/cmp-vsnip", branch = "main"})

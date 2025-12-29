@@ -115,10 +115,12 @@ local servers = {
     "svelte",
     -- "html",
     -- "emmet_ls",
-    "dockerls",
     "zls",
     "gradle_ls",
-    "kotlin_language_server"
+    "kotlin_language_server",
+    "docker_language_server",
+    -- "csharp_ls"
+    "roslyn_ls"
 }
 
 local util = require("lspconfig/util")
@@ -133,97 +135,94 @@ local function find_python_path(_, config)
     config.settings.python.pythonPath = p
 end
 
-local pid = vim.fn.getpid()
-lspconfig.omnisharp.setup(
-    {
-        cmd = {"omnisharp", "--languageserver", "--hostPID", tostring(pid)},
-        on_attach = on_attach,
-        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        handlers = {
-            ["textDocument/definition"] = require("omnisharp_extended").handler
-        }
-    }
-)
+-- local pid = vim.fn.getpid()
+-- vim.lsp.config.omnisharp = {
+--     cmd = {"omnisharp", "--languageserver", "--hostPID", tostring(pid)},
+--     on_attach = on_attach,
+--     capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+--     handlers = {
+--         ["textDocument/definition"] = require("omnisharp_extended").handler
+--     }
+-- }
+-- vim.lsp.enable("omnisharp")
 
 local default_capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 for _, server_name in ipairs(servers) do
     if server_name == "pylsp" then
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = default_capabilities,
-                before_init = find_python_path
-            }
-        )
+        vim.lsp.config[server_name] = {
+            on_attach = on_attach,
+            capabilities = default_capabilities,
+            before_init = find_python_path
+        }
     elseif server_name == "ccls" then
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = default_capabilities,
-                before_init = find_python_path,
-                init_options = {
-                    compilationDatabaseDirectory = "build"
-                }
+        vim.lsp.config[server_name] = {
+            on_attach = on_attach,
+            capabilities = default_capabilities,
+            before_init = find_python_path,
+            init_options = {
+                compilationDatabaseDirectory = "build"
             }
-        )
+        }
     elseif server_name == "emmet_ls" or server_name == "html" then
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = default_capabilities,
-                filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
-            }
-        )
+        vim.lsp.config[server_name] = {
+            on_attach = on_attach,
+            capabilities = default_capabilities,
+            filetypes = {"html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "template"}
+        }
     elseif server_name == "gradle_ls" then
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = default_capabilities,
-                root_dir = lspconfig.util.root_pattern(
-                    "settings.gradle",
-                    "build.gradle",
-                    "settings.gradle.kts",
-                    "build.gradle.kts"
-                )
-            }
-        )
+        vim.lsp.config[server_name] = {
+            on_attach = on_attach,
+            capabilities = default_capabilities,
+            root_dir = lspconfig.util.root_pattern(
+                "settings.gradle",
+                "build.gradle",
+                "settings.gradle.kts",
+                "build.gradle.kts"
+            )
+        }
     else
-        lspconfig[server_name].setup(
-            {
-                on_attach = on_attach,
-                capabilities = default_capabilities
-            }
-        )
+        vim.lsp.config[server_name] = {
+            on_attach = on_attach,
+            capabilities = default_capabilities
+        }
     end
 
     if server_name == "tsserver" then
-        lspconfig[server_name].filetypes = {"typescript", "typescriptreact", "typescript.tsx"}
+        vim.lsp.config[server_name].filetypes = {"typescript", "typescriptreact", "typescript.tsx"}
     end
 end
 
+for _, server in ipairs(servers) do
+    vim.lsp.enable(server)
+end
+
 -- Lua language server protocol
-lspconfig.lua_ls.setup {
-    on_attach = on_attach,
-    capabilities = default_capabilities,
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT"
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = {"vim"}
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true)
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false
+vim.lsp.config(
+    "lua_ls",
+    {
+        on_attach = on_attach,
+        capabilities = default_capabilities,
+        settings = {
+            Lua = {
+                runtime = {
+                    -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                    version = "LuaJIT"
+                },
+                diagnostics = {
+                    -- Get the language server to recognize the `vim` global
+                    globals = {"vim"}
+                },
+                workspace = {
+                    -- Make the server aware of Neovim runtime files
+                    library = vim.api.nvim_get_runtime_file("", true)
+                },
+                -- Do not send telemetry data containing a randomized but unique identifier
+                telemetry = {
+                    enable = false
+                }
             }
         }
     }
-}
+)
+vim.lsp.enable("lua_ls")
