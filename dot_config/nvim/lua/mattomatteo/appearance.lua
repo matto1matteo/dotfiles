@@ -10,4 +10,15 @@ vim.g.onedark_termcolors = 256
 
 -- General
 vim.opt.background = "dark"
-vim.cmd([[ colorscheme jellybeans-nvim ]])
+-- vim.cmd([[ colorscheme jellybeans-nvim ]])
+
+-- require("kanagawa").setup(
+--     {
+--         theme = "wave",
+--         background = {
+--             dark = "wave",
+--             light = "lotus"
+--         }
+--     }
+-- )
+vim.cmd([[ colorscheme kanagawa ]])

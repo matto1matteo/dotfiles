@@ -97,9 +97,6 @@ local on_attach = function(_, bufnr)
     )
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 -- lspconfig.<server_name>.setup{ options } to run a server
 -- Add server name to servers table
 local servers = {
@@ -123,16 +120,21 @@ local servers = {
     "roslyn_ls"
 }
 
-local util = require("lspconfig/util")
-
 local function find_python_path(_, config)
     local p
     if vim.env.VIRTUAL_ENV then
         p = table.concat({vim.env.VIRTUAL_ENV, "bin", "python3"})
     else
-        p = util.find_cmd("python", "./venv/bin", config.root_dir)
+        p = vim.fn.findfile("python", "./venv/bin", config.root_dir)
+        if p == "" then
+            p = "/usr/bin/python"
+        end
     end
-    config.settings.python.pythonPath = p
+    config.plugins = {
+        jedi = {
+            environment = p
+        }
+    }
 end
 
 -- local pid = vim.fn.getpid()
@@ -146,14 +148,16 @@ end
 -- }
 -- vim.lsp.enable("omnisharp")
 
-local default_capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+local default_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 for _, server_name in ipairs(servers) do
     if server_name == "pylsp" then
         vim.lsp.config[server_name] = {
             on_attach = on_attach,
             capabilities = default_capabilities,
-            before_init = find_python_path
+            before_init = find_python_path,
         }
     elseif server_name == "ccls" then
         vim.lsp.config[server_name] = {

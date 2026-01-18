@@ -1,3 +1,6 @@
+vim.o.runtimepath = vim.o.runtimepath .. "~/.config/nvim,~/.vim/after,~/.vim"
+vim.o.packpath = vim.o.packpath .. "~/.config/nvim,~/.vim"
+
 vim.cmd([[
 syntax enable
 ]])
