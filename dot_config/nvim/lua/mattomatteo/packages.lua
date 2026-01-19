@@ -1,11 +1,15 @@
-local plugin_install_dirr = vim.fn.stdpath("data") .. "/site/pack/packer/start"
-local packer_install_dir = plugin_install_dirr .. "/packer.nvim"
+local function ensure_packer()
+    local fn = vim.fn
+    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+    if fn.empty(install_path) > 0 then
+        vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
+        vim.cmd([[packadd packer.nvim]])
+        return true
+    end
 
-if vim.fn.empty(vim.fn.glob(packer_install_dir)) > 0 then
-    PackerBoot =
-        vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_install_dir})
-    vim.cmd [[packadd packer.nvim]]
+    return false
 end
+local must_bootstrap = ensure_packer()
 
 return require("packer").startup(
     ---Function used to install plugins
@@ -13,8 +17,7 @@ return require("packer").startup(
     function(use)
         -- include packer for non bootstraping situation
         use("wbthomason/packer.nvim")
-        -- Automatically set up your configuration after cloning packer.nvim
-        -- Put this at the end after all plugins
+
         use("tmux-plugins/vim-tmux")
 
         -- Fuzzy finders
@@ -23,6 +26,7 @@ return require("packer").startup(
 
         -- IDEditor like features)
         use("neovim/nvim-lspconfig")
+        use({"mfussenegger/nvim-dap"})
         -- Tex code completer, probably want to switch to coc-vimtex
         use(
             {
@@ -46,7 +50,7 @@ return require("packer").startup(
         use({"hrsh7th/cmp-path", branch = "main"})
         use("onsails/lspkind-nvim")
         use({"folke/lsp-colors.nvim", branch = "main"})
-        use({"Hoffs/omnisharp-extended-lsp.nvim"})
+        -- use({"Hoffs/omnisharp-extended-lsp.nvim"})
         use(
             {
                 "luckasRanarison/tailwind-tools.nvim",
@@ -73,6 +77,7 @@ return require("packer").startup(
         -- Themes and style
         use("morhetz/gruvbox")
         use("doums/darcula")
+        use({"rebelot/kanagawa.nvim"})
         -- use("joshdick/onedark.vim")
         use("ayu-theme/ayu-vim")
         use("rktjmp/lush.nvim")
@@ -109,7 +114,7 @@ return require("packer").startup(
         -- Markdown
         use({"iamcco/markdown-preview.nvim", run = "cd app && yarn install"})
 
-        if PackerBoot then
+        if must_bootstrap then
             require("packer").sync()
         end
     end
